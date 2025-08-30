@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,8 +54,8 @@ public class User {
     @Column(name = "id", length = 36)
     private String id;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email là bắt buộc")
+    @Email(message = "Email phải đúng định dạng")
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
@@ -61,7 +63,8 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { jakarta.persistence.CascadeType.MERGE,
+            jakarta.persistence.CascadeType.PERSIST })
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), indexes = {
             @Index(name = "idx_user_roles_user_id", columnList = "user_id"),
             @Index(name = "idx_user_roles_role_id", columnList = "role_id")
@@ -69,15 +72,15 @@ public class User {
     @BatchSize(size = 10)
     private Set<Role> roles;
 
-    @NotBlank(message = "First name is required")
-    @Size(max = 50, message = "First name must not exceed 50 characters")
-    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "First name can only contain letters and spaces")
+    @NotBlank(message = "Tên là bắt buộc")
+    @Size(max = 50, message = "Tên không được vượt quá 50 ký tự")
+    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "Tên chỉ được chứa chữ cái và khoảng trắng")
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
-    @Size(max = 50, message = "Last name must not exceed 50 characters")
-    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "Last name can only contain letters and spaces")
+    @NotBlank(message = "Họ là bắt buộc")
+    @Size(max = 50, message = "Họ không được vượt quá 50 ký tự")
+    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "Họ chỉ được chứa chữ cái và khoảng trắng")
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
@@ -85,17 +88,30 @@ public class User {
     @Column(name = "gender", length = 10)
     private Gender gender;
 
-    @Past(message = "Date of birth must be in the past")
+    @Past(message = "Ngày sinh phải trong quá khứ")
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Pattern(regexp = "^[+]?[0-9\\s\\-\\(\\)]{10,15}$", message = "Phone number must be valid")
+    @Pattern(regexp = "^[+]?[0-9\\s\\-\\(\\)]{10,15}$", message = "Số điện thoại phải hợp lệ")
     @Column(name = "phone", length = 20)
     private String phone;
 
-    @Size(max = 255, message = "Address must not exceed 255 characters")
+    @Size(max = 255, message = "Địa chỉ không được vượt quá 255 ký tự")
     @Column(name = "address", length = 255)
     private String address;
+
+    @Column(name = "profile_picture", length = 255)
+    private String profilePictureUrl;
+
+    @Column(name = "is_blocked", nullable = false)
+    @Builder.Default
+    private Boolean isBlocked = false;
+
+    @Column(name = "block_reason", length = 500)
+    private String blockReason;
+
+    @Column(name = "blocked_at")
+    private LocalDateTime blockedAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

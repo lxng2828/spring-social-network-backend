@@ -5,6 +5,7 @@ public enum ErrorCode {
     USER_ALREADY_EXISTS("USER_002", "Người dùng đã tồn tại"),
     USER_INVALID_INPUT("USER_003", "Dữ liệu người dùng không hợp lệ"),
     USER_UNAUTHORIZED("USER_004", "Không có quyền truy cập"),
+    USER_IS_BLOCKED("USER_005", "Tài khoản đã bị khóa"),
     ROLE_NOT_FOUND("ROLE_001", "Không tìm thấy vai trò"),
     ROLE_ALREADY_EXISTS("ROLE_002", "Vai trò đã tồn tại"),
     INTERNAL_SERVER_ERROR("SYS_001", "Lỗi hệ thống nội bộ"),
@@ -15,7 +16,17 @@ public enum ErrorCode {
     REQUEST_TIMEOUT("SYS_006", "Yêu cầu quá thời gian chờ"),
     TOO_MANY_REQUESTS("SYS_007", "Quá nhiều yêu cầu, vui lòng thử lại sau"),
     SERVICE_UNAVAILABLE("SYS_008", "Dịch vụ tạm thời không khả dụng"),
-    INVALID_CREDENTIALS("SYS_009", "Tài khoản hoặc mật khẩu không hợp lệ");
+    INVALID_CREDENTIALS("SYS_009", "Tài khoản hoặc mật khẩu không hợp lệ"),
+    FILE_UPLOAD_FAILED("FILE_001", "Upload file thất bại"),
+    POST_NOT_FOUND("POST_001", "Không tìm thấy bài viết"),
+    POST_FORBIDDEN("POST_002", "Không có quyền truy cập bài viết"),
+    COMMENT_NOT_FOUND("COMMENT_001", "Không tìm thấy bình luận"),
+    COMMENT_FORBIDDEN("COMMENT_002", "Không có quyền thao tác với bình luận này"),
+    REPLY_NOT_FOUND("REPLY_001", "Không tìm thấy trả lời"),
+    REPLY_FORBIDDEN("REPLY_002", "Không có quyền thao tác với trả lời này"),
+    EMAIL_SEND_FAILED("EMAIL_001", "Gửi email thất bại"),
+    INVALID_TOKEN("TOKEN_001", "Token không hợp lệ"),
+    TOKEN_EXPIRED("TOKEN_002", "Token đã hết hạn");
 
     private final String code;
     private final String message;
